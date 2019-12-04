@@ -27,7 +27,7 @@
                 <div class="row">
                     <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
                         <div class="site-branding d-flex align-items-center">
-                            <a class="d-block" href="index.php" rel="home"><img class="d-block" src="images/logo.png" alt="logo"></a>
+                            <a class="d-block" href="index.php" rel="home"><img class="d-block" src="images/logo1.png" alt="logo"></a>
                         </div><!-- .site-branding -->
 
                         <nav class="site-navigation d-flex justify-content-end align-items-center">
@@ -87,9 +87,10 @@
         <div class="container">
             <div class="row align-items-end">
                 <div class="col-12 col-lg-6">
-                    <h2>E-Medical Diagnosis</h2>
+                    <h2>Smart-AI Diabetes Diagnosis</h2>
 
-                    <p>All diseases have a set of associated symptoms. The patient needs to enter the observed symptoms and the system can recognize the disease. Whenever someone has some disease the human body responds to it by by giving symptoms. These symptoms can point towards a particular disease. Suppose a patient has the symptoms as fever and difficulty in micturation, the patient might have an urinary tract infection, if this is further enhanced by vomiting, the patient might have appendicitis. The System matches the set of symptoms to the disease. The patient needs to input the set of symptoms and the system calculates a score of symptoms based on the symptoms and gives a ranking to the diseases, and the selects the best scoring disease that is the most probable disease. </p>
+                    <p>Diabetes is considered as one of the deadliest and chronic diseases which causes an increase in blood sugar. Many complications occur if diabetes remains untreated and unidentified. The tedious identifying process results in visiting of a patient to a diagnostic center and consulting doctor. But the rise in machine learning approaches solves this critical problem </p>
+                    <p>Out Diabetes Diagnosis system is trained with complex machine learning algorithms with high precision and accuracy to bring the best and most accurate prediction for patients. Handy recommendations are also provided based on a patient's diabetes status</p>
 
                     
                 </div>
@@ -107,7 +108,7 @@
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="foot-about">
-                            <h2><a href="#"><img src="images/logo.png" alt=""></a></h2>
+                            <h2><a href="#"><img src="images/logo1.png" alt=""></a></h2>
 
                             <p>We offer a quick and smart system. Patients can trust a 100% efficient system with their health needs, diagnosis and prescription without meeting the doctor physically.</p>
 

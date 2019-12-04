@@ -214,7 +214,7 @@ else {$success="Kindly Register to get started!";}
                 <div class="row">
                     <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
                         <div class="site-branding d-flex align-items-center">
-                            <a class="d-block" href="index.html" rel="home"><img class="d-block" src="images/logo.png" alt="logo"></a>
+                            <a class="d-block" href="index.html" rel="home"><img class="d-block" src="images/logo1.png" alt="logo"></a>
                         </div><!-- .site-branding -->
 
                         <nav class="site-navigation d-flex justify-content-end align-items-center">
@@ -375,7 +375,7 @@ else {$success="Kindly Register to get started!";}
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="foot-about">
-                            <h2><a href="#"><img src="images/logo.png" alt=""></a></h2>
+                            <h2><a href="#"><img src="images/logo1.png" alt=""></a></h2>
 
                             <p>We offer a quick and smart system. Patients can trust a 100% efficient system with their health needs, diagnosis and prescription without meeting the doctor physically.</p>
 

@@ -1,5 +1,6 @@
 <?php session_start();
 require "inc/connect.php";
+require "inc/function.php";
 $feedback="Diagnosis Report appears here, ";
 $feedback.="Fill the <a href='diagnosis.php' style='color:blue;'>Symptoms Form </a>first";
 // get userstatus
@@ -9,111 +10,94 @@ $exestatus=$conn->query($querystatus);
 $exestatus=$exestatus->fetch_assoc();
 if(isset($_SESSION["user"]))
 {
-        $pregnancies=$_POST['pregnancies'];
-        $glucose=$_POST['glucose'];
-        $bp=$_POST['bp'];
-        $skin=$_POST['skin'];
-        $insulin=$_POST['insulin'];
-        $bmi=$_POST['bmi'];
-        $dpf=$_POST['dfp'];
-        $age=$_POST['age'];
-
-
-        if ($headache==1){
-            $yellowfever+=1;
-            $typhoid+=1;
-            $malaria+=1;
+        $pregnancies=$_POST['Pregnancies'];
+        $glucose=$_POST['Glucose'];
+        $bp=$_POST['BloodPressure'];
+        $skin=$_POST['SkinThickness'];
+        $insulin=$_POST['Insulin'];
+        $bmi=$_POST['BMI'];
+        $dpf=$_POST['DiabetesPedigreeFunction'];
+        $age=$_POST['Age'];
+       
+        $data = json_encode($_POST);
+        // echo $data;
+        $method = "POST";
+        $url =  'https://diagg-predictor.herokuapp.com/';
+        $prediction = CallAPI($method, $url, $data);
+        // echo $prediction;
+        $response = json_decode($prediction, true);
+        $status = $response['results']['results'];
+        // print_r($status);
+        if($status == 0){
+            $diagnosis = 'Negative';
+            $comments='. From the submitted parameters, Kindly be informed that you are currently not diabetic!'; 
+            $comments .=' <b>Recommendations:</b><br>. ';
+            $comments.="You can keep your self more immune from Diabetes by observing the following tips:";
+            $comments.="<ul style='font-size:14px; color: #828282'>
+                            <li>Lose Extra weight, get a doctor, dietitian and a fitness trainer</li>
+                            <li>Check your blood sugar level at least twice a day</li>
+                            <li>Get A1c blood tests to find out your average blood sugar for the past 2 to 3 months</li>
+                            <li>Track your carbohydrates.</li>
+                            <li>Control your blood pressure, cholesterol, and triglyceride levels.</li>
+                            <li>Get more exercise</li>
+                            <li>When you are sleep deprived, you tend to eat more. Get enough sleep.</li>
+                            <li>Do a complete check up at least once every year.</li>
+                        </ul>";
+        }elseif($status == 1){
+            $diagnosis = 'Positive';
+            $comments=' <p>From the submitted parameters, Kindly be informed that there is a likelihood of been diabetic!</p>';
+            $comments .=' <b>Recommendations:</b><br>. ';
+            $comments.="Stay calm!, the situation can be managed. You can increase your chances of being Diabetes free by observing the following tips:";
+            $comments.="<ul style='font-size:14px; color: #828282'>
+                            <li>Check your blood sugar level at least twice a day</li>
+                            <li>Track your carbohydrates.</li>
+                            <li>Control your blood pressure, cholesterol, and triglyceride levels. Keep track of those numbers</li>
+                            <li>Get more exercise</li>
+                            <li>When you are sleep deprived, you tend to eat more. Get enough sleep.</li>
+                            <li>Do a complete check up at least once every year.</li>
+                        </ul>";
         }
-
-        if ($muscleaches==1){
-            $yellowfever+=1;
-            $malaria+=1;
-        }
-
-        if($nauseous==1){
-            $yellowfever+=1;
-            $malaria+=1;
-        }
-
-        if($photophobia==1){
-            $yellowfever+=5;
-        }
-        if($dizzy==1){
-            $yellowfever+=5;
-        }
-        if($redeye==1){
-            $yellowfever+=5;
-        }
-        
-        if($appetite==1){
-            $yellowfever+=1;
-            $typhoid+=1;
-        }
-        if($dizzy==1){
-            $yellowfever+=5;
-        }
-        
-        if($genweakness==1 ){
-            $typhoid+=5;
-        }
-
-        if( $lethargy==1){
-            $typhoid+=5;
-        }
-        if ($bloodystool==1){
-            $malaria+=5;
-        }
-        if ($convulsion==1){
-            $malaria+=5;
-        }
-        if ($abdominal==1){
-            $malaria+=5;
-        }
-        $report['yellowfever']=$yellowfever;
-        $report['typhoid']=$typhoid;
-        $report['malaria']=$malaria;
-        $disease=max($report);
-        $diagnosis = array_search($disease,$report);
-            if($disease==0){
-                $feedback = "You have no disease that can be diagnosed with the selected options";
-            }
-            else{
-                if($diagnosis=='yellowfever'){
-                    $diagnosis = 'Yellow Fever';
-                    $comments='. Because there is no cure for the viral infection itself, medical treatment of yellow fever focuses on easing symptoms such as fever, muscle pain, and dehydration. Because of the risk of internal bleeding, avoid aspirin and other nonsteroidal anti-inflammatory drugs. I strongly recommend that you are hospitalized.';
-            }
-            elseif($diagnosis=='typhoid'){
-                $diagnosis = 'Typhoid';
-                $comments ='. <p>The only effective treatment for typhoid is antibiotics. The most commonly used are ciprofloxacin (for non-pregnant adults) and ceftriaxone. Other than antibiotics, it is important to rehydrate by drinking adequate water. Visit your physician immediately to determine severity.</p>';
-                 $comments ='. <p><b>Drug Recommended:</b> ciprofloxacin</p>. ';
-                 $comments.="<p><b>Dosage:</b> 500 mg orally every 12 hours for 10 days </p>";
-                 $comments.="<p><b> Other drugs: Ceftriaxone, Cipro, Azithromycin Dose Pack</b></p>";
-            }
-            elseif($diagnosis=='malaria'){
-                $diagnosis = 'Malaria';
-                 $comments ='. <p><b>Drug Recommended:</b> ARTEMETHER</p>. ';
-                 $comments.="<p><b>Dosage:</b> 35 kg or more: 4 tablets as single initial dose, followed by 4 tablets after 8 hours, and then 4 tablets twice a day (morning and evening) for the following 2 days (total course: 24 tablets). If symptoms persists after 3 days, Kindly call the physician </p>";
-                 $comments.="<p><b> Other drugs: Coartem, Malarone, Chloroquine, Doxycycline</b></p>";
-            }
-        }
-             $feedback =  "<b>Hello ". $_SESSION['firstName'].", you have been diagnosed of $diagnosis".$comments."</b>";
-             if($exestatus['fld_diagnosis']==0){
-                $query="INSERT INTO tbl_symptom (fld_cardNumber,fld_headache,fld_muscleaches,fld_photophobia,fld_nauseous,fld_appetite,fld_dizzy,fld_redeye,fld_lethargy,fld_genpains,fld_diarrhea,fld_sweat,fld_shiver,fld_abdominal,fld_genweakness,fld_bloodystool,fld_convulsion,fld_diagnosis)
-                VALUES('$cardNumber',$headache,$muscleaches,$photophobia,$nauseous,$appetite,$dizzy,$redeye,$lethargy,$genpains,$diarrhea,$sweat,$shiver,$abdominal,$genweakness,$bloodystool,$convulsion,'$diagnosis')";
-                 $conn->query($query);
-            $queryupdate = "update tbl_patient
-                            SET fld_diagnosis= 1
-                            WHERE fld_cardNumber='".$_SESSION['cardNumber']."'";
-                            if($conn->query($queryupdate)){
-                                echo "<script>alert('Holla');</script>";
-                             }else echo $conn->error;
-             }  
-             else{
-                $query="UPDATE tbl_symptom
-                        SET fld_headache=".$headache.",fld_muscleaches=".$muscleaches.",fld_photophobia=".$photophobia.",fld_nauseous=".$nauseous.",fld_appetite=".$appetite.",fld_dizzy=".$dizzy.",fld_redeye=".$redeye.",fld_lethargy=".$lethargy.",fld_genpains=".$genpains.",fld_diarrhea=".$diarrhea.",fld_sweat=".$sweat.",fld_shiver=".$shiver.",fld_abdominal=".$abdominal.",fld_genweakness=".$genweakness.",fld_bloodystool=".$bloodystool.",fld_convulsion=".$convulsion.",fld_diagnosis='".$diagnosis."'               
-                             WHERE fld_cardNumber='".$cardNumber."'";
-                        $conn->query($query)
-             }
+        // $diagnosis = array_search($disease,$report);
+        //     if($disease==0){
+        //         $feedback = "You have no disease that can be diagnosed with the selected options";
+        //     }
+        //     else{
+        //         if($diagnosis=='yellowfever'){
+        //             $diagnosis = 'Yellow Fever';
+        //             $comments='. Because there is no cure for the viral infection itself, medical treatment of yellow fever focuses on easing symptoms such as fever, muscle pain, and dehydration. Because of the risk of internal bleeding, avoid aspirin and other nonsteroidal anti-inflammatory drugs. I strongly recommend that you are hospitalized.';
+        //     }
+        //     elseif($diagnosis=='typhoid'){
+        //         $diagnosis = 'Typhoid';
+        //         $comments ='. <p>The only effective treatment for typhoid is antibiotics. The most commonly used are ciprofloxacin (for non-pregnant adults) and ceftriaxone. Other than antibiotics, it is important to rehydrate by drinking adequate water. Visit your physician immediately to determine severity.</p>';
+        //          $comments ='. <p><b>Drug Recommended:</b> ciprofloxacin</p>. ';
+        //          $comments.="<p><b>Dosage:</b> 500 mg orally every 12 hours for 10 days </p>";
+        //          $comments.="<p><b> Other drugs: Ceftriaxone, Cipro, Azithromycin Dose Pack</b></p>";
+        //     }
+        //     elseif($diagnosis=='malaria'){
+        //         $diagnosis = 'Malaria';
+        //          $comments ='. <p><b>Drug Recommended:</b> ARTEMETHER</p>. ';
+        //          $comments.="<p><b>Dosage:</b> 35 kg or more: 4 tablets as single initial dose, followed by 4 tablets after 8 hours, and then 4 tablets twice a day (morning and evening) for the following 2 days (total course: 24 tablets). If symptoms persists after 3 days, Kindly call the physician </p>";
+        //          $comments.="<p><b> Other drugs: Coartem, Malarone, Chloroquine, Doxycycline</b></p>";
+        //     }
+        // }
+             $feedback =  "<b>Hello ". $_SESSION['firstName'].", you have been diagnosed $diagnosis</b><p>".$comments."</p>";
+        //      if($exestatus['fld_diagnosis']==0){
+        //         $query="INSERT INTO tbl_symptom (fld_cardNumber,fld_headache,fld_muscleaches,fld_photophobia,fld_nauseous,fld_appetite,fld_dizzy,fld_redeye,fld_lethargy,fld_genpains,fld_diarrhea,fld_sweat,fld_shiver,fld_abdominal,fld_genweakness,fld_bloodystool,fld_convulsion,fld_diagnosis)
+        //         VALUES('$cardNumber',$headache,$muscleaches,$photophobia,$nauseous,$appetite,$dizzy,$redeye,$lethargy,$genpains,$diarrhea,$sweat,$shiver,$abdominal,$genweakness,$bloodystool,$convulsion,'$diagnosis')";
+        //          $conn->query($query);
+        //     $queryupdate = "update tbl_patient
+        //                     SET fld_diagnosis= 1
+        //                     WHERE fld_cardNumber='".$_SESSION['cardNumber']."'";
+        //                     if($conn->query($queryupdate)){
+        //                         echo "<script>alert('Holla');</script>";
+        //                      }else echo $conn->error;
+        //      }  
+        //      else{
+        //         $query="UPDATE tbl_symptom
+        //                 SET fld_headache=".$headache.",fld_muscleaches=".$muscleaches.",fld_photophobia=".$photophobia.",fld_nauseous=".$nauseous.",fld_appetite=".$appetite.",fld_dizzy=".$dizzy.",fld_redeye=".$redeye.",fld_lethargy=".$lethargy.",fld_genpains=".$genpains.",fld_diarrhea=".$diarrhea.",fld_sweat=".$sweat.",fld_shiver=".$shiver.",fld_abdominal=".$abdominal.",fld_genweakness=".$genweakness.",fld_bloodystool=".$bloodystool.",fld_convulsion=".$convulsion.",fld_diagnosis='".$diagnosis."'               
+        //                      WHERE fld_cardNumber='".$cardNumber."'";
+        //                 $conn->query($query);
+        //      };
              
 
 
@@ -150,7 +134,7 @@ if(isset($_SESSION["user"]))
                 <div class="row">
                     <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
                         <div class="site-branding d-flex align-items-center">
-                            <a class="d-block" href="diagnosis.php" rel="home"><img class="d-block" src="images/logo.png" alt="logo"></a>
+                            <a class="d-block" href="diagnosis.php" rel="home"><img class="d-block" src="images/logo1.png" alt="logo"></a>
                         </div><!-- .site-branding -->
 
                         <nav class="site-navigation d-flex justify-content-end align-items-center">
@@ -165,12 +149,7 @@ if(isset($_SESSION["user"]))
                             </ul>
                         </nav><!-- .site-navigation -->
 
-                        <div class="hamburger-menu d-lg-none">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div><!-- .hamburger-menu -->
+                        
                     </div><!-- .col -->
                 </div><!-- .row -->
             </div><!-- .container -->
@@ -198,16 +177,10 @@ if(isset($_SESSION["user"]))
     <div class="med-history">
         <div class="container">
             <div class="row align-items-end">
-                <div class="col-12 col-lg-6">
-                    <h2>Report</h2>
-
+                <div class="col-12 col-lg-12">
                     <p><?php echo $feedback;?> </p>
 
                     
-                </div>
-
-                <div class="col-12 col-lg-6 mt-5 mt-lg-0">
-                    <img class="responsive" src="images/about.jpg" alt="">
                 </div>
             </div>
         </div>
@@ -221,7 +194,7 @@ if(isset($_SESSION["user"]))
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="foot-about">
-                            <h2><a href="#"><img src="images/logo.png" alt=""></a></h2>
+                            <h2><a href="index.php"><img src="images/logo1.png" alt=""></a></h2>
 
                             <p>We offer a quick and smart system. Patients can trust a 100% efficient system with their health needs, diagnosis and prescription without meeting the doctor physically.</p>
 

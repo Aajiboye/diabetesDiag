@@ -164,7 +164,7 @@ echo '</script>';
                 <div class="row">
                     <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
                         <div class="site-branding d-flex align-items-center">
-                            <a class="d-block" href="index.php" rel="home"><img class="d-block" src="images/logo.png" alt="logo"></a>
+                            <a class="d-block" href="index.php" rel="home"><img class="d-block" src="images/logo1.png" alt="logo"></a>
                         </div><!-- .site-branding -->
 
                         <nav class="site-navigation d-flex justify-content-end align-items-center">
@@ -224,29 +224,29 @@ echo '</script>';
                           <!-- One "tab" for each step in the form: -->
                           <div class="tab">
                                 <p style="font-size:20px;">Patient's number of pregnancies</p>
-                                <input type="text" name="pregnancies" style="width:100%;">
+                                <input type="text" name="Pregnancies" style="width:100%;">
 
                                 <p style="font-size:20px;">Patient's blood glucose level</p>
-                                <input type="text" name="glucose" style="width:100%;">
+                                <input type="text" name="Glucose" style="width:100%;">
 
                                 <p style="font-size:20px;">Patient's blood pressure</p>
-                                <input type="text" name="bp" style="width:100%;">
+                                <input type="text" name="BloodPressure" style="width:100%;">
 
                                 <p style="font-size:20px;">Patient's skin thickness</p>
-                                <input type="text" name="skin" style="width:100%;">
+                                <input type="text" name="SkinThickness" style="width:100%;">
                               </div>
                               <div class="tab">
                                 <p style="font-size:20px;">Patient's insulin level</p>
-                                <input type="text" name="insulin" style="width:100%;">
+                                <input type="text" name="Insulin" style="width:100%;">
 
                                 <p style="font-size:20px;">Patient's BMI</p>
-                                <input type="text" name="bmi" style="width:100%;">
+                                <input type="text" name="BMI" style="width:100%;">
 
                                 <p style="font-size:20px;">Patient's Diabetes Pedigree Function</p>
-                                <input type="text" name="dpf" style="width:100%;">
+                                <input type="text" name="DiabetesPedigreeFunction" style="width:100%;">
 
                                 <p style="font-size:20px;">Patient's age</p>
-                                <input type="text" name="age" style="width:100%;">
+                                <input type="text" name="Age" style="width:100%;">
                               </div>
                               
                               
@@ -351,7 +351,7 @@ echo '</script>';
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="foot-about">
-                            <h2><a href="#"><img src="images/logo.png" alt=""></a></h2>
+                            <h2><a href="#"><img src="images/logo1.png" alt=""></a></h2>
 
                             <p>We offer a quick and smart system. Patients can trust a 100% efficient system with their health needs, diagnosis and prescription without meeting the doctor physically.</p>
 
